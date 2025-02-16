@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import redis # type: ignore
 import pytz  # Importar pytz para manejar las zonas horarias
 from bson import ObjectId
+from functools import wraps
 
 # Configuración de la base de datos y servidor
 uri = "mongodb+srv://rgarabano:0wJj7eJmF2cnMNwT@tpouade.yhucf.mongodb.net/"
@@ -40,24 +41,22 @@ facturas = database.get_collection("facturas")
 # Definir zona horaria de Argentina
 argentina_tz = pytz.timezone('America/Argentina/Buenos_Aires')
 
+def admin_required(func):
+    @wraps(func)
+    @jwt_required()
+    def wrapper(*args, **kwargs):
+        current_user_id = get_jwt_identity()
 
-def calcular_categoria(user_id):
-    try:
-        # Contar la cantidad de pedidos del usuario en la base de datos
-        cantidad_pedidos = pedidos.count_documents({"user_id": ObjectId(user_id)})
+        # Buscar al usuario en la base de datos
+        user = users.find_one({"_id": ObjectId(current_user_id)})
 
-        # Definir la categoría según la cantidad de pedidos
-        if cantidad_pedidos >= 9:
-            return "Oro"
-        elif cantidad_pedidos >= 4:
-            return "Plata"
-        else:
-            return "Bronce"
-    except Exception as e:
-        print(f"Error al calcular la categoría: {e}")
-        return "Bronce"  # Si hay un error, se mantiene como Bronce por defecto
-
-
+        # Verificar si el usuario existe y tiene el rol "admin"
+        if not user or user.get("rol") != "admin":
+            return jsonify({"error": "Acceso denegado, permisos insuficientes"}), 403
+        
+        return func(*args, **kwargs)
+    
+    return wrapper
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -90,7 +89,9 @@ def register():
             "password": hashed_password,
             "pais": pais,
             "direccion": direccion,
-            "categoria": "Bronce"  # Inicialmente lo asignamos como 'Bronce'
+            "cantidad_facturas": 0,
+            "categoria": "Bronce", # Inicialmente lo asignamos como 'Bronce'
+            "rol": "cliente"
         })
         
         # Obtener el user_id del nuevo usuario
@@ -222,17 +223,16 @@ def record_activity():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/agregar_productos', methods=['POST'])
+@admin_required
 def agregar_producto():
     try:
-        data = request.json  # Recibe los datos en formato JSON
-
-        # Verifica que los datos requeridos están presentes
+        data = request.json
         required_fields = ["nombre", "categoria", "descripcion", "precio", "stock", "imagenes", "valoraciones", "etiquetas"]
+        
         for field in required_fields:
             if field not in data:
                 return jsonify({"error": f"Falta el campo '{field}'"}), 400
 
-        # Inserta el producto en la base de datos
         nuevo_producto = {
             "nombre": data["nombre"],
             "categoria": data["categoria"],
@@ -246,46 +246,70 @@ def agregar_producto():
         resultado = inventario.insert_one(nuevo_producto)
 
         return jsonify({"mensaje": "Producto agregado exitosamente", "id": str(resultado.inserted_id)}), 201
-
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "No tenes los permisos necesarios"}), 500
 
 @app.route('/comprar', methods=['POST'])
 @jwt_required()
 def comprar():
     try:
-        # Obtener el usuario autenticado desde el token JWT
+        # Obtener el usuario de la sesión activa (obteniendo el user_id del token JWT)
         current_user_id = get_jwt_identity()
-        
-        # Obtener los detalles de la compra desde la solicitud
+
+        #Obtener los detalles de la compra desde la solicitud
         compras = request.get_json().get('compras')
 
         # Validar que las compras tienen el formato esperado
         if not isinstance(compras, list) or any('producto_id' not in compra or 'cantidad' not in compra for compra in compras):
             return jsonify({"error": "Formato de compra inválido"}), 400
 
-        # Guardar cada compra en MongoDB
         for compra in compras:
+            producto_id = compra['producto_id']
+            cantidad = int(compra['cantidad'])
+
+            # Verificar el stock del producto
+            producto = inventario.find_one({"_id": ObjectId(producto_id)})
+            if not producto:
+                return jsonify({"error": f"Producto con id {producto_id} no encontrado"}), 404
+
+            stock_actual = int(producto.get('stock', 0))
+            if stock_actual < cantidad:
+                return jsonify({"error": f"No hay suficiente stock para el producto {producto['nombre']}"}), 400
+
+            # Registrar la compra en Redis
+            compra_id = f"user:{current_user_id}:compra:{producto_id}"
+            redis_client.hmset(compra_id, {'producto_id': producto_id, 'cantidad': cantidad})
+
+            # Transferir la compra a MongoDB y reducir el stock en la colección inventario
             pedidos.insert_one({
                 "user_id": ObjectId(current_user_id),
-                "producto_id": ObjectId(compra['producto_id']),
-                "cantidad": compra['cantidad'],
+                "producto_id": ObjectId(producto_id),
+                "cantidad": cantidad,
                 "fecha_compra": datetime.now(argentina_tz)
             })
-        
-        # Calcular la nueva categoría del usuario después de la compra
-        nueva_categoria = calcular_categoria(current_user_id)
 
-        # Actualizar la categoría en la base de datos
-        users.update_one({"_id": ObjectId(current_user_id)}, {"$set": {"categoria": nueva_categoria}})
+            inventario.update_one(
+                {"_id": ObjectId(producto_id)},
+                {"$inc": {"stock": -cantidad}}
+            )
 
-        return jsonify({"message": "Compras registradas y categoría actualizada"}), 200
+        return jsonify({"message": "Compras registradas exitosamente"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/productos', methods=['GET'])
+def obtener_productos():
+    try:
+        productos = list(inventario.find())
+        for producto in productos:
+            producto['_id'] = str(producto['_id'])
 
-
+        return jsonify(productos), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 @app.route('/modificar_inventario', methods=['POST'])
-@jwt_required()
+@admin_required
 def modificar_inventario():
     try:
         # Obtener el usuario de la sesión activa (obteniendo el user_id del token JWT)
@@ -329,6 +353,19 @@ def modificar_inventario():
         return jsonify({"error": str(e)}), 500
 
 
+def calcular_categoria(cantidad_facturas):
+    try:
+        # Definir la categoría según la cantidad de facturas
+        if cantidad_facturas >= 9:
+            return "Oro"
+        elif cantidad_facturas >= 4:
+            return "Plata"
+        else:
+            return "Bronce"
+    except Exception as e:
+        print(f"Error al calcular la categoría: {e}")
+        return "Bronce"  # Si hay un error, se mantiene como Bronce por defecto
+
 @app.route('/generar_factura', methods=['POST'])
 @jwt_required()
 def generar_factura():
@@ -346,13 +383,21 @@ def generar_factura():
         if not pedidos_usuario:
             return jsonify({"error": "No se encontraron pedidos para el usuario"}), 404
 
+        # Construir la dirección del usuario
+        direccion = user['direccion'][0]
+        ubicacion_usuario = f"{user['pais']}, {direccion['direccion']} {direccion['altura']}, CP: {direccion['codigo_postal']}"
+
         # Construir la factura
         factura = {
             "fecha_compra": datetime.now(argentina_tz),
             "nombre_usuario": user['nombre'],
-            "ubicacion_usuario": user['pais'],
+            "ubicacion_usuario": ubicacion_usuario,
             "productos": [],
-            "total": 0
+            "total": 0,
+            "iva": 0,
+            "total_con_iva": 0,
+            "descuento_categoria": 0,
+            "total_final": 0
         }
 
         for pedido in pedidos_usuario:
@@ -368,26 +413,51 @@ def generar_factura():
                 "nombre": producto['nombre'],
                 "descripcion": producto['descripcion'],
                 "cantidad": cantidad,
-                "precio_unitario": float(producto['precio']),
-                "total": cantidad * float(producto['precio'])
+                "precio_unitario": round(float(producto['precio']), 2),
+                "total": round(cantidad * float(producto['precio']), 2)
             }
 
             factura['productos'].append(producto_factura)
             factura['total'] += producto_factura['total']
 
-        # Convertir ObjectId a string
-        factura['_id'] = str(factura['_id']) if '_id' in factura else None
+        # Redondear el total a dos decimales
+        factura['total'] = round(factura['total'], 2)
 
-        for producto in factura['productos']:
-            producto['producto_id'] = str(producto['producto_id']) if 'producto_id' in producto else None
+        # Calcular el IVA (24% del total)
+        factura['iva'] = round(factura['total'] * 0.24, 2)
+        factura['total_con_iva'] = round(factura['total'] + factura['iva'], 2)
+
+        # Calcular el descuento según la categoría del usuario
+        categoria = user.get('categoria', 'bronce').lower()  # Por defecto, 'bronce'
+        if categoria == 'plata':
+            factura['descuento_categoria'] = round(factura['total_con_iva'] * 0.05, 2)
+        elif categoria == 'oro':
+            factura['descuento_categoria'] = round(factura['total_con_iva'] * 0.10, 2)
+
+        # Calcular el total final con el descuento aplicado
+        factura['total_final'] = round(factura['total_con_iva'] - factura['descuento_categoria'], 2)
 
         # Guardar la factura en la colección facturas
         facturas.insert_one(factura)
 
+        # Actualizar la cantidad de facturas del usuario
+        users.update_one({"_id": ObjectId(current_user_id)}, {"$inc": {"cantidad_facturas": 1}})
+
+        # Obtener la nueva cantidad de facturas del usuario
+        user = users.find_one({"_id": ObjectId(current_user_id)})
+
+        # Calcular la nueva categoría del usuario
+        nueva_categoria = calcular_categoria(user["cantidad_facturas"])
+
+        # Actualizar la categoría del usuario en la base de datos
+        users.update_one({"_id": ObjectId(current_user_id)}, {"$set": {"categoria": nueva_categoria}})
+
+        # Convertir ObjectId a string para la respuesta
+        factura['_id'] = str(factura['_id']) if '_id' in factura else None
+
         return jsonify(factura), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 if __name__ == '__main__':
     app.run(debug=True)
