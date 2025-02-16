@@ -1,0 +1,53 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+</head>
+<body>
+    <h2>Registro</h2>
+    <form id="registerForm">
+        <label>Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <label>Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label>Contraseña:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Registrar</button>
+    </form>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Evita que el formulario se envíe de la manera tradicional
+
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Crea un objeto con los datos del formulario
+            const data = { nombre, email, password };
+
+            // Realiza la solicitud con fetch y envía los datos como JSON
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert('Registro exitoso');
+                    // Puedes redirigir al usuario o hacer algo con el mensaje
+                } else {
+                    alert('Error en el registro: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un problema al registrar el usuario.');
+            });
+        });
+    </script>
+</body>
+</html>

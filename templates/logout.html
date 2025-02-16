@@ -1,0 +1,44 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cerrar Sesión</title>
+</head>
+<body>
+    <h2>Cerrar Sesión</h2>
+    <form id="logoutForm">
+        <label>Token:</label>
+        <input type="text" id="token" name="token" required>
+        <button type="submit">Cerrar Sesión</button>
+    </form>
+
+    <script>
+        document.getElementById('logoutForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Evita que el formulario se envíe de manera tradicional
+
+            const token = document.getElementById('token').value;
+
+            // Realiza la solicitud con fetch y envía el token en el encabezado Authorization
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`  // Enviar el token en el encabezado Authorization
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert('Sesión cerrada exitosamente');
+                    // Puedes redirigir al usuario o hacer algo con el mensaje
+                } else {
+                    alert('Error al cerrar sesión: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un problema al cerrar sesión.');
+            });
+        });
+    </script>
+</body>
+</html>

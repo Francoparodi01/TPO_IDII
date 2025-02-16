@@ -1,0 +1,50 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio de Sesión</title>
+</head>
+<body>
+    <h2>Iniciar Sesión</h2>
+    <form id="loginForm">
+        <label>Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label>Contraseña:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Ingresar</button>
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Evita que el formulario se envíe de la manera tradicional
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Crea un objeto con los datos del formulario
+            const data = { email, password };
+
+            // Realiza la solicitud con fetch y envía los datos como JSON
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.access_token) {
+                    alert('Inicio de sesión exitoso');
+                    // Puedes guardar el token o redirigir al usuario
+                } else {
+                    alert('Error en el inicio de sesión: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un problema al iniciar sesión.');
+            });
+        });
+    </script>
+</body>
+</html>

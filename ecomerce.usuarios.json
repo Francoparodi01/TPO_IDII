@@ -1,0 +1,108 @@
+[{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae09"
+  },
+  "id": 1,
+  "nombre": "Franco Parodi",
+  "email": "franco.parodi@example.com",
+  "edad": 23,
+  "pais": "Argentina",
+  "categoria": "premium",
+  "direccion": {
+    "calle": "Av. Corrientes",
+    "numero": 1234,
+    "ciudad": "Buenos Aires",
+    "codigo_postal": 1000
+  },
+  "telefono": "11-1234-5678"  
+},
+{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae0a"
+  },
+  "id": 2,
+  "nombre": "Lucía Fernández",
+  "email": "lucia.fernandez@example.com",
+  "edad": 27,
+  "pais": "España"
+},
+{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae0b"
+  },
+  "id": 3,
+  "nombre": "Carlos Méndez",
+  "email": "carlos.mendez@example.com",
+  "edad": 30,
+  "pais": "México"
+},
+{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae0c"
+  },
+  "id": 4,
+  "nombre": "Ana Ríos",
+  "email": "ana.rios@example.com",
+  "edad": 25,
+  "pais": "Colombia"
+},
+{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae0d"
+  },
+  "id": 5,
+  "nombre": "Javier López",
+  "email": "javier.lopez@example.com",
+  "edad": 35,
+  "pais": "Chile"
+},
+{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae0e"
+  },
+  "id": 6,
+  "nombre": "Sofía García",
+  "email": "sofia.garcia@example.com",
+  "edad": 22,
+  "pais": "Uruguay"
+},
+{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae0f"
+  },
+  "id": 7,
+  "nombre": "Matías Torres",
+  "email": "matias.torres@example.com",
+  "edad": 28,
+  "pais": "Perú"
+},
+{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae10"
+  },
+  "id": 8,
+  "nombre": "Valentina Pérez",
+  "email": "valentina.perez@example.com",
+  "edad": 26,
+  "pais": "Venezuela"
+},
+{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae11"
+  },
+  "id": 9,
+  "nombre": "Diego Ramírez",
+  "email": "diego.ramirez@example.com",
+  "edad": 29,
+  "pais": "Ecuador"
+},
+{
+  "_id": {
+    "$oid": "67b0dce7173fcdd6b420ae12"
+  },
+  "id": 10,
+  "nombre": "Camila Suárez",
+  "email": "camila.suarez@example.com",
+  "edad": 24,
+  "pais": "Paraguay"
+}]
