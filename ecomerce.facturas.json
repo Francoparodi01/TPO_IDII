@@ -1,0 +1,1286 @@
+[{
+  "_id": {
+    "$oid": "67b1815fa38817c1c52ee043"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T06:10:39.203Z"
+  },
+  "nombre_usuario": "Martin Palermo",
+  "ubicacion_usuario": "Peru",
+  "productos": [
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 1899.99,
+      "total": 3799.98
+    }
+  ],
+  "total": 4799.97
+},
+{
+  "_id": null,
+  "fecha_compra": {
+    "$date": "2025-02-16T06:21:45.550Z"
+  },
+  "nombre_usuario": "Martin Palermo",
+  "ubicacion_usuario": "Peru",
+  "productos": [
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99,
+      "producto_id": null
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 950,
+      "total": 1900,
+      "producto_id": null
+    }
+  ],
+  "total": 2899.99
+},
+{
+  "_id": {
+    "$oid": "67b22745181e45851ead2f5e"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T17:58:28.427Z"
+  },
+  "nombre_usuario": "nombre de alguien",
+  "ubicacion_usuario": "Argentina",
+  "productos": [
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 24,
+      "precio_unitario": 249.99,
+      "total": 5999.76
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    }
+  ],
+  "total": 115306.61,
+  "iva": 27673.59,
+  "total_con_iva": 142980.2,
+  "descuento_categoria": 0,
+  "total_final": 142980.2
+},
+{
+  "_id": {
+    "$oid": "67b227db181e45851ead2f5f"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T18:00:57.712Z"
+  },
+  "nombre_usuario": "nombre de alguien",
+  "ubicacion_usuario": "Argentina",
+  "productos": [
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 24,
+      "precio_unitario": 249.99,
+      "total": 5999.76
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 21,
+      "precio_unitario": 249.99,
+      "total": 5249.79
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    }
+  ],
+  "total": 129626.19,
+  "iva": 31110.29,
+  "total_con_iva": 160736.48,
+  "descuento_categoria": 16073.65,
+  "total_final": 144662.83
+},
+{
+  "_id": {
+    "$oid": "67b231bd9a3b2d6cee93a11f"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T18:43:09.718Z"
+  },
+  "nombre_usuario": "Lautaro Martinez",
+  "ubicacion_usuario": "Argentina",
+  "productos": [
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    }
+  ],
+  "total": 2909.99,
+  "iva": 698.4,
+  "total_con_iva": 3608.39,
+  "descuento_categoria": 0,
+  "total_final": 3608.39
+},
+{
+  "_id": {
+    "$oid": "67b231fc9a3b2d6cee93a120"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T18:44:12.167Z"
+  },
+  "nombre_usuario": "Lautaro Martinez",
+  "ubicacion_usuario": "Argentina",
+  "productos": [
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    }
+  ],
+  "total": 2909.99,
+  "iva": 698.4,
+  "total_con_iva": 3608.39,
+  "descuento_categoria": 0,
+  "total_final": 3608.39
+},
+{
+  "_id": {
+    "$oid": "67b2320d9a3b2d6cee93a121"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T18:44:29.120Z"
+  },
+  "nombre_usuario": "Lautaro Martinez",
+  "ubicacion_usuario": "Argentina",
+  "productos": [
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    }
+  ],
+  "total": 2909.99,
+  "iva": 698.4,
+  "total_con_iva": 3608.39,
+  "descuento_categoria": 0,
+  "total_final": 3608.39
+},
+{
+  "_id": {
+    "$oid": "67b2320e9a3b2d6cee93a122"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T18:44:30.411Z"
+  },
+  "nombre_usuario": "Lautaro Martinez",
+  "ubicacion_usuario": "Argentina",
+  "productos": [
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    }
+  ],
+  "total": 2909.99,
+  "iva": 698.4,
+  "total_con_iva": 3608.39,
+  "descuento_categoria": 0,
+  "total_final": 3608.39
+},
+{
+  "_id": {
+    "$oid": "67b2365794284c37c42ab504"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T19:02:47.664Z"
+  },
+  "nombre_usuario": "Lautaro Martinez",
+  "ubicacion_usuario": "Argentina, Ramon Falcon 1644, CP: 1406",
+  "productos": [
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    }
+  ],
+  "total": 2909.99,
+  "iva": 698.4,
+  "total_con_iva": 3608.39,
+  "descuento_categoria": 180.42,
+  "total_final": 3427.97
+},
+{
+  "_id": {
+    "$oid": "67b266c30606778cd6f1fac9"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T22:29:22.799Z"
+  },
+  "nombre_usuario": "Lautaro Martinez",
+  "ubicacion_usuario": "Argentina, Ramon Falcon 1644, CP: 1406",
+  "productos": [
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Smartphone Pro",
+      "descripcion": "Teléfono con pantalla AMOLED de 6.5' y 128GB de almacenamiento",
+      "cantidad": 1,
+      "precio_unitario": 899.99,
+      "total": 899.99
+    },
+    {
+      "nombre": "Smartphone Ultra X",
+      "descripcion": "Pantalla AMOLED de 6.5 pulgadas, 128GB de almacenamiento, cámara de 50MP.",
+      "cantidad": 2,
+      "precio_unitario": 499.99,
+      "total": 999.98
+    }
+  ],
+  "total": 5809.95,
+  "iva": 1394.39,
+  "total_con_iva": 7204.34,
+  "descuento_categoria": 360.22,
+  "total_final": 6844.12
+},
+{
+  "_id": {
+    "$oid": "67b26896f04be00e5bc601a6"
+  },
+  "factura_id": "d79a5cef-ae7e-4a1b-8667-59ed9df9d29f",
+  "user_id": {
+    "$oid": "67b23667b089f9aeee67483b"
+  },
+  "pedidos": [
+    {
+      "user_id": "67b23667b089f9aeee67483b",
+      "producto_id": "67b0e0bc173fcdd6b420ae26",
+      "cantidad": 2,
+      "precio_unitario": 249.99,
+      "subtotal": 499.98,
+      "fecha_compra": {
+        "$date": "2025-02-16T19:37:10.137Z"
+      },
+      "_id": {
+        "$oid": "67b26896f04be00e5bc601a3"
+      }
+    },
+    {
+      "user_id": "67b23667b089f9aeee67483b",
+      "producto_id": "67b0e0bc173fcdd6b420ae21",
+      "cantidad": 2,
+      "precio_unitario": 499.99,
+      "subtotal": 999.98,
+      "fecha_compra": {
+        "$date": "2025-02-16T19:37:10.277Z"
+      },
+      "_id": {
+        "$oid": "67b26896f04be00e5bc601a4"
+      }
+    },
+    {
+      "user_id": "67b23667b089f9aeee67483b",
+      "producto_id": "67b0e0bc173fcdd6b420ae27",
+      "cantidad": 1,
+      "precio_unitario": 1999.99,
+      "subtotal": 1999.99,
+      "fecha_compra": {
+        "$date": "2025-02-16T19:37:10.412Z"
+      },
+      "_id": {
+        "$oid": "67b26896f04be00e5bc601a5"
+      }
+    }
+  ],
+  "total": 3499.95,
+  "fecha_emision": {
+    "$date": "2025-02-16T19:37:10.457Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b26ac90733c40d13e033e5"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T19:46:33.555Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Xbox Series X",
+      "descripcion": "Consola con 1TB de almacenamiento y compatibilidad con juegos de generaciones anteriores.",
+      "cantidad": 1,
+      "precio_unitario": 499.99,
+      "total": 499.99
+    },
+    {
+      "nombre": "Microondas LG Smart Inverter",
+      "descripcion": "Microondas con tecnología inverter para cocción más uniforme.",
+      "cantidad": 2,
+      "precio_unitario": 249.99,
+      "total": 499.98
+    }
+  ],
+  "total": 999.97,
+  "iva": 239.99,
+  "total_con_iva": 1239.96,
+  "descuento_categoria": 0,
+  "total_final": 1239.96
+},
+{
+  "_id": {
+    "$oid": "67b26c946cb1058a4de4aaa3"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T22:54:12.297Z"
+  },
+  "nombre_usuario": "Lautaro Martinez",
+  "ubicacion_usuario": "Argentina, Ramon Falcon 1644, CP: 1406",
+  "productos": [
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Laptop Gamer ASUS ROG",
+      "descripcion": "Laptop de alto rendimiento con procesador Intel i7 y tarjeta gráfica RTX 4060.",
+      "cantidad": 2,
+      "precio_unitario": 955,
+      "total": 1910
+    },
+    {
+      "nombre": "Smartphone Samsung Galaxy S23",
+      "descripcion": "Teléfono de última generación con pantalla AMOLED de 6.8 pulgadas y 256GB de almacenamiento.",
+      "cantidad": 1,
+      "precio_unitario": 999.99,
+      "total": 999.99
+    },
+    {
+      "nombre": "Smartphone Pro",
+      "descripcion": "Teléfono con pantalla AMOLED de 6.5' y 128GB de almacenamiento",
+      "cantidad": 1,
+      "precio_unitario": 899.99,
+      "total": 899.99
+    },
+    {
+      "nombre": "Smartphone Ultra X",
+      "descripcion": "Pantalla AMOLED de 6.5 pulgadas, 128GB de almacenamiento, cámara de 50MP.",
+      "cantidad": 2,
+      "precio_unitario": 499.99,
+      "total": 999.98
+    },
+    {
+      "nombre": "Smartphone Pro",
+      "descripcion": "Teléfono con pantalla AMOLED de 6.5' y 128GB de almacenamiento",
+      "cantidad": 1,
+      "precio_unitario": 899.99,
+      "total": 899.99
+    }
+  ],
+  "total": 6709.94,
+  "iva": 1610.39,
+  "total_con_iva": 8320.33,
+  "descuento_categoria": 416.02,
+  "total_final": 7904.31
+},
+{
+  "_id": {
+    "$oid": "67b26dc24acb04f0996274ef"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T19:59:14.075Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Bicicleta Estática Peloton",
+      "descripcion": "Bicicleta de spinning con pantalla táctil de 21 pulgadas y entrenamientos interactivos.",
+      "cantidad": 7,
+      "precio_unitario": 1899.99,
+      "total": 13299.93
+    }
+  ],
+  "total": 13299.93,
+  "iva": 3191.98,
+  "total_con_iva": 16491.91,
+  "descuento_categoria": 0,
+  "total_final": 16491.91
+},
+{
+  "_id": {
+    "$oid": "67b27ba30228ab85415c98fa"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T20:58:27.709Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Auriculares Inalámbricos Sony WH-1000XM5",
+      "descripcion": "Auriculares con cancelación de ruido activa y hasta 30 horas de batería.",
+      "cantidad": 8,
+      "precio_unitario": 399.99,
+      "total": 3199.92
+    }
+  ],
+  "total": 3199.92,
+  "iva": 767.98,
+  "total_con_iva": 3967.9,
+  "descuento_categoria": 0,
+  "total_final": 3967.9
+},
+{
+  "_id": {
+    "$oid": "67b27d0dfbf12ea500f4b2db"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-16T21:04:29.451Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Auriculares Inalámbricos Sony WH-1000XM5",
+      "descripcion": "Auriculares con cancelación de ruido activa y hasta 30 horas de batería.",
+      "cantidad": 4,
+      "precio_unitario": 399.99,
+      "total": 1599.96
+    }
+  ],
+  "total": 1599.96,
+  "iva": 383.99,
+  "total_con_iva": 1983.95,
+  "descuento_categoria": 0,
+  "total_final": 1983.95,
+  "forma_pago": "Tarjeta de crédito"
+},
+{
+  "_id": {
+    "$oid": "67b2cdaac774e12d4f815348"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-17T02:48:26.123Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Reloj Casio G-Shock",
+      "descripcion": "Reloj digital resistente a golpes y sumergible hasta 200m.",
+      "cantidad": 20,
+      "precio_unitario": 129.99,
+      "total": 2599.8
+    },
+    {
+      "nombre": "Timbre Inteligente Ring Video Doorbell",
+      "descripcion": "Timbre con cámara HD y comunicación bidireccional a través de app.",
+      "cantidad": 3,
+      "precio_unitario": 99.99,
+      "total": 299.97
+    }
+  ],
+  "total": 2899.77,
+  "iva": 695.94,
+  "total_con_iva": 3595.71,
+  "descuento_categoria": 0,
+  "total_final": 3595.71,
+  "forma_pago": "Tarjeta de crédito"
+},
+{
+  "_id": {
+    "$oid": "67b2d06b046033fc169734e3"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-17T03:00:11.796Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Timbre Inteligente Ring Video Doorbell",
+      "descripcion": "Timbre con cámara HD y comunicación bidireccional a través de app.",
+      "cantidad": 3,
+      "precio_unitario": 99.99,
+      "total": 299.97
+    },
+    {
+      "nombre": "Juego de Sábanas 100% Algodón",
+      "descripcion": "Sábanas suaves y transpirables con 300 hilos y tacto premium.",
+      "cantidad": 35,
+      "precio_unitario": 59.99,
+      "total": 2099.65
+    }
+  ],
+  "total": 2399.62,
+  "iva": 575.91,
+  "total_con_iva": 2975.53,
+  "descuento_categoria": 0,
+  "total_final": 2975.53,
+  "estado": "pendiente",
+  "pago": null
+},
+{
+  "_id": {
+    "$oid": "67b2d06b046033fc169734e4"
+  },
+  "factura_id": "67b2d06b046033fc169734e3",
+  "mensaje": "Factura generada correctamente",
+  "forma_pago": "Desconocida"
+},
+{
+  "_id": {
+    "$oid": "67b2d0c591bb36f6c2a69415"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-17T03:01:41.903Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Timbre Inteligente Ring Video Doorbell",
+      "descripcion": "Timbre con cámara HD y comunicación bidireccional a través de app.",
+      "cantidad": 3,
+      "precio_unitario": 99.99,
+      "total": 299.97
+    },
+    {
+      "nombre": "Juego de Sábanas 100% Algodón",
+      "descripcion": "Sábanas suaves y transpirables con 300 hilos y tacto premium.",
+      "cantidad": 3,
+      "precio_unitario": 59.99,
+      "total": 179.97
+    }
+  ],
+  "total": 479.94,
+  "iva": 115.19,
+  "total_con_iva": 595.13,
+  "descuento_categoria": 0,
+  "total_final": 595.13,
+  "estado": "pendiente",
+  "pago": null
+},
+{
+  "_id": {
+    "$oid": "67b2d0c691bb36f6c2a69416"
+  },
+  "factura_id": "67b2d0c591bb36f6c2a69415",
+  "mensaje": "Factura generada correctamente",
+  "forma_pago": "Desconocida"
+},
+{
+  "_id": {
+    "$oid": "67b2d11c48c19697e16016e8"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-17T03:03:08.382Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Timbre Inteligente Ring Video Doorbell",
+      "descripcion": "Timbre con cámara HD y comunicación bidireccional a través de app.",
+      "cantidad": 3,
+      "precio_unitario": 99.99,
+      "total": 299.97
+    },
+    {
+      "nombre": "Juego de Sábanas 100% Algodón",
+      "descripcion": "Sábanas suaves y transpirables con 300 hilos y tacto premium.",
+      "cantidad": 3,
+      "precio_unitario": 59.99,
+      "total": 179.97
+    }
+  ],
+  "total": 479.94,
+  "iva": 115.19,
+  "total_con_iva": 595.13,
+  "descuento_categoria": 0,
+  "total_final": 595.13,
+  "estado": "pendiente",
+  "pago": null
+},
+{
+  "_id": {
+    "$oid": "67b2d11c48c19697e16016e9"
+  },
+  "factura_id": "67b2d11c48c19697e16016e8",
+  "total_final": 595.13,
+  "mensaje": "Factura generada correctamente",
+  "factura": {
+    "fecha_compra": {
+      "$date": "2025-02-17T03:03:08.382Z"
+    },
+    "nombre_usuario": "Dios",
+    "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+    "productos": [
+      {
+        "nombre": "Timbre Inteligente Ring Video Doorbell",
+        "descripcion": "Timbre con cámara HD y comunicación bidireccional a través de app.",
+        "cantidad": 3,
+        "precio_unitario": 99.99,
+        "total": 299.97
+      },
+      {
+        "nombre": "Juego de Sábanas 100% Algodón",
+        "descripcion": "Sábanas suaves y transpirables con 300 hilos y tacto premium.",
+        "cantidad": 3,
+        "precio_unitario": 59.99,
+        "total": 179.97
+      }
+    ],
+    "total": 479.94,
+    "iva": 115.19,
+    "total_con_iva": 595.13,
+    "descuento_categoria": 0,
+    "total_final": 595.13,
+    "estado": "pendiente",
+    "pago": null,
+    "_id": {
+      "$oid": "67b2d11c48c19697e16016e8"
+    }
+  },
+  "forma_pago": "Desconocida"
+},
+{
+  "_id": {
+    "$oid": "67b2d34356bef4f2dc7b3edb"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-17T03:12:19.955Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Juego de Sábanas 100% Algodón",
+      "descripcion": "Sábanas suaves y transpirables con 300 hilos y tacto premium.",
+      "cantidad": 4,
+      "precio_unitario": 59.99,
+      "total": 239.96
+    }
+  ],
+  "total": 239.96,
+  "iva": 57.59,
+  "total_con_iva": 297.55,
+  "descuento_categoria": 0,
+  "total_final": 297.55,
+  "estado": "pendiente",
+  "pago": null
+},
+{
+  "_id": {
+    "$oid": "67b2d34456bef4f2dc7b3edc"
+  },
+  "factura_id": "67b2d34356bef4f2dc7b3edb",
+  "total_final": 297.55,
+  "mensaje": "Factura generada correctamente",
+  "factura": {
+    "fecha_compra": {
+      "$date": "2025-02-17T03:12:19.955Z"
+    },
+    "nombre_usuario": "Dios",
+    "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+    "productos": [
+      {
+        "nombre": "Juego de Sábanas 100% Algodón",
+        "descripcion": "Sábanas suaves y transpirables con 300 hilos y tacto premium.",
+        "cantidad": 4,
+        "precio_unitario": 59.99,
+        "total": 239.96
+      }
+    ],
+    "total": 239.96,
+    "iva": 57.59,
+    "total_con_iva": 297.55,
+    "descuento_categoria": 0,
+    "total_final": 297.55,
+    "estado": "pendiente",
+    "pago": null,
+    "_id": "67b2d34356bef4f2dc7b3edb"
+  },
+  "forma_pago": "tarjeta"
+},
+{
+  "_id": {
+    "$oid": "67b2d61788a7b0badd9623a6"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-17T03:24:23.701Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Lámpara Inteligente Philips Hue",
+      "descripcion": "Bombilla LED con control de color y compatibilidad con asistentes de voz.",
+      "cantidad": 4,
+      "precio_unitario": 49.99,
+      "total": 199.96
+    }
+  ],
+  "total": 199.96,
+  "iva": 47.99,
+  "total_con_iva": 247.95,
+  "descuento_categoria": 0,
+  "total_final": 247.95,
+  "forma_pago": "tarjeta"
+},
+{
+  "_id": {
+    "$oid": "67b2d80c32577b6abef7b520"
+  },
+  "fecha_compra": {
+    "$date": "2025-02-17T03:32:44.010Z"
+  },
+  "nombre_usuario": "Dios",
+  "ubicacion_usuario": "Cielo, Paraíso 777, CP: 0000",
+  "productos": [
+    {
+      "nombre": "Lámpara Inteligente Philips Hue",
+      "descripcion": "Bombilla LED con control de color y compatibilidad con asistentes de voz.",
+      "cantidad": 4,
+      "precio_unitario": 49.99,
+      "total": 199.96
+    }
+  ],
+  "total": 199.96,
+  "iva": 47.99,
+  "total_con_iva": 247.95,
+  "descuento_categoria": 0,
+  "total_final": 247.95,
+  "forma_pago": "tarjeta"
+}]
