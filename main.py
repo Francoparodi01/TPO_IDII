@@ -707,6 +707,7 @@ def registrar_pago(user_id, factura_id, monto, forma_pago):
     except Exception as e:
         print(f"Error al registrar el pago: {e}")  # Agregamos log en consola
 
+        
 @app.route('/carrito/comprar', methods=['POST'])
 @jwt_required()
 def confirmar_compra():
@@ -718,7 +719,6 @@ def confirmar_compra():
         if not carrito_bytes:
             return jsonify({"error": "Carrito vacío"}), 400
 
-        # Validar forma de pago
         forma_pago = request.json.get('forma_pago')
         if not forma_pago:
             return jsonify({"error": "Debe seleccionar una forma de pago"}), 400
@@ -731,21 +731,17 @@ def confirmar_compra():
             producto_id = producto_id_bytes.decode("utf-8")
             cantidad = int(cantidad_bytes.decode("utf-8"))
 
-            # Verificar que el producto exista
-            producto = inventario.find_one({"_id": ObjectId(producto_id)}, 
-                                           {"nombre": 1, "precio": 1, "stock": 1})
+            producto = inventario.find_one({"_id": ObjectId(producto_id)}, {"nombre": 1, "precio": 1, "stock": 1})
             if not producto:
                 return jsonify({"error": f"Producto {producto_id} no encontrado"}), 400
 
             if producto["stock"] < cantidad:
                 return jsonify({"error": f"Stock insuficiente para {producto['nombre']}"}), 400
 
-            # Restar stock
             operaciones_stock.append(UpdateOne({"_id": ObjectId(producto_id)}, {"$inc": {"stock": -cantidad}}))
 
-            # Agregar producto a la factura
             productos_factura.append({
-                "producto_id": str(producto["_id"]),  # Convertir ObjectId a string
+                "producto_id": str(producto["_id"]),
                 "nombre": producto["nombre"],
                 "cantidad": cantidad,
                 "precio_unitario": producto["precio"],
@@ -753,73 +749,68 @@ def confirmar_compra():
             })
             total_factura += producto["precio"] * cantidad
 
-        # Aplicar cambios en el stock en un solo paso
         if operaciones_stock:
             inventario.bulk_write(operaciones_stock)
 
-        # Obtener cantidad de facturas previas del usuario
         user = users.find_one({"_id": ObjectId(current_user_id)})
         cantidad_facturas = user.get("cantidad_facturas", 0)
 
-        # Aplicar descuento solo después de la décima factura
-        descuento_aplicado = False
+        descuento = 0
         if cantidad_facturas >= 10:
-            descuento = total_factura * 0.10  # Ejemplo: 10% de descuento
-            total_factura -= descuento
-            descuento_aplicado = True
+            descuento = total_factura * 0.20
+        elif cantidad_facturas >= 5:
+            descuento = total_factura * 0.10
+        total_factura -= descuento
 
-        # Calcular la categoría y actualizar en la base de datos
         categoria_usuario = calcular_categoria(cantidad_facturas)
-
-        # Generar la factura
-        factura = generar_factura_from_data(current_user_id, productos_factura)
+        factura = generar_factura_from_data(current_user_id, productos_factura, descuento)
         factura["forma_pago"] = forma_pago
-        factura["descuento_aplicado"] = descuento_aplicado
-        factura["total_final"] = total_factura
 
-        # Insertar factura en MongoDB
         factura_insertada = facturas.insert_one(factura)
-        factura["_id"] = str(factura_insertada.inserted_id)  # Convertir ObjectId de la factura
+        factura["_id"] = str(factura_insertada.inserted_id)
 
-        # Registrar pago
         registrar_pago(current_user_id, factura["_id"], factura["total_final"], forma_pago)
-
-        # Limpiar carrito en Redis
         redis_client.delete(carrito_key)
+        log_event("purchase", "Compra confirmada y factura generada", {"factura_id": factura["_id"], "total": factura["total_final"], "forma_pago": forma_pago}, current_user_id)
 
-        # Registrar evento de compra
-        log_event("purchase", "Compra confirmada y factura generada", {
-            "factura_id": factura["_id"],
-            "total": factura["total_final"],
-            "forma_pago": forma_pago
-        }, current_user_id)
-
-        # Incluir los productos en la factura de respuesta
         factura["productos"] = productos_factura
 
-        # Actualizar la cantidad de facturas y la categoría después de generar la factura
-        users.update_one(
-            {"_id": ObjectId(current_user_id)},
-            {"$set": {"categoria": categoria_usuario}}  # No incrementamos facturas antes
-        )
-        users.update_one(
-            {"_id": ObjectId(current_user_id)},
-            {"$inc": {"cantidad_facturas": 1}}  # Incrementamos las facturas después
-        )
+        users.update_one({"_id": ObjectId(current_user_id)}, {"$set": {"categoria": categoria_usuario}})
+        users.update_one({"_id": ObjectId(current_user_id)}, {"$inc": {"cantidad_facturas": 1}})
 
-        return jsonify({
-            "message": "Compra confirmada y factura generada",
-            "factura": factura  
-        }), 200
-
+        return jsonify({"message": "Compra confirmada y factura generada", "factura": factura}), 200
     except Exception as e:
         return jsonify({"error": f"Error interno: {str(e)}"}), 500
 
-
-def generar_factura_from_data(current_user_id, productos_factura):
+@app.route('/carrito/eliminar', methods=['DELETE'])
+@jwt_required()
+def eliminar_carrito():
     try:
-        user = users.find_one({"_id": ObjectId(current_user_id)}, 
-                              {"nombre": 1, "pais": 1, "direccion": 1, "categoria": 1})
+        # Obtener el ID del usuario actual desde el JWT
+        current_user_id = get_jwt_identity()
+
+        # Clave del carrito en Redis
+        carrito_id = f"carrito:{current_user_id}"
+
+        # Verificar si el carrito existe en Redis
+        if not redis_client.exists(carrito_id):
+            return jsonify({"error": "El carrito está vacío o no existe"}), 404
+
+        # Eliminar el carrito completo de Redis
+        redis_client.delete(carrito_id)
+
+        # Registrar el evento de eliminación
+        log_event("cart_update", "Carrito eliminado completamente", {}, current_user_id)
+
+        return jsonify({"message": "Carrito eliminado exitosamente"}), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500
+
+
+def generar_factura_from_data(current_user_id, productos_factura, descuento=0):
+    try:
+        user = users.find_one({"_id": ObjectId(current_user_id)}, {"nombre": 1, "pais": 1, "direccion": 1, "categoria": 1})
         if not user:
             raise Exception("Usuario no encontrado")
 
@@ -831,19 +822,14 @@ def generar_factura_from_data(current_user_id, productos_factura):
             "user_id": str(ObjectId(current_user_id)),
             "nombre_usuario": user["nombre"],
             "ubicacion_usuario": ubicacion_usuario,
-            "productos": productos_factura,  # Usar los productos directamente
-            "total": 0,
+            "productos": productos_factura,
+            "total": sum(p["subtotal"] for p in productos_factura),
             "iva": 0,
             "total_con_iva": 0,
             "descuento_categoria": 0,
             "total_final": 0
         }
 
-        # Calcular total
-        for producto in productos_factura:
-            factura["total"] += producto["subtotal"]
-
-        # Calcular impuestos y descuentos
         factura["iva"] = round(factura["total"] * 0.24, 2)
         factura["total_con_iva"] = round(factura["total"] + factura["iva"], 2)
 
@@ -851,8 +837,8 @@ def generar_factura_from_data(current_user_id, productos_factura):
         categoria_usuario = user.get("categoria", "bronce").lower()
         factura["descuento_categoria"] = round(factura["total_con_iva"] * descuentos.get(categoria_usuario, 0), 2)
 
+        factura["total_final"] = round(factura["total_con_iva"] - descuento, 2)
         return factura
-
     except Exception as e:
         return {"error": f"Error en generación de factura: {str(e)}"}
 
@@ -895,12 +881,13 @@ def obtener_facturas():
 @app.route('/facturas/<string:user_id>', methods=['GET'])
 def obtener_facturas_por_usuario(user_id):
     try:
-        # Verificar si el user_id es un ObjectId válido
+        # Verificar si el user_id es un ObjectId válido, pero si es un string válido no lo convierte
         if not ObjectId.is_valid(user_id):
-            return jsonify({"error": "ID de usuario no válido"}), 400
+            # En caso de que no sea un ObjectId válido, considerarlo como un string
+            user_id = str(user_id)
 
         # Buscar las facturas del usuario en MongoDB
-        facturas_usuario = list(facturas.find({"user_id": ObjectId(user_id)}))
+        facturas_usuario = list(facturas.find({"user_id": user_id}))  # Buscar usando el string de user_id
 
         if not facturas_usuario:
             return jsonify({"mensaje": "No se encontraron facturas para este usuario"}), 404
@@ -916,8 +903,6 @@ def obtener_facturas_por_usuario(user_id):
 
     except Exception as e:
         return jsonify({"error": f"Error al obtener las facturas del usuario: {str(e)}"}), 500
-
-
 
 
 
