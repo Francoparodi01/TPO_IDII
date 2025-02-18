@@ -34,7 +34,6 @@ client = MongoClient(uri)
 database = client.get_database("ecomerce")
 users = database.get_collection("usuarios")
 sessions = database.get_collection("sesiones")
-pedidos = database.get_collection("pedidos")
 inventario= database.get_collection("inventario")
 registro_inventario = database.get_collection("registroInventario")
 facturas = database.get_collection("facturas")
@@ -146,7 +145,6 @@ def serialize_user(user):
     user["_id"] = str(user["_id"])  # Convertir ObjectId a string
     return user
 
-
 @app.route('/login', methods=['POST'])
 def login():
     try:
@@ -154,27 +152,35 @@ def login():
         email = data.get("email")
         password = data.get("password")
 
+        # Validar que email y contraseña sean proporcionados
         if not email or not password:
             return jsonify({"error": "Email y contraseña son requeridos"}), 400
 
-        # Buscar usuario en MongoDB (ya no usamos Redis para `user:{email}`)
+        # Validar que el email tenga una estructura mínima (debe contener '@' y '.')
+        if "@" not in email or "." not in email:
+            return jsonify({"error": "Email no tiene formato válido"}), 400
+
+        # Buscar usuario en MongoDB
         user = users.find_one({"email": email})
         if not user:
             return jsonify({"error": "Credenciales incorrectas"}), 401
-        
+
         user["_id"] = str(user["_id"])  # Convertir ObjectId a string
         
         # Verificar contraseña
         if not check_password_hash(user["password"], password):
             return jsonify({"error": "Credenciales incorrectas"}), 401
 
-        # Revocar sesión anterior si existe
-        redis_client.delete(f"session:{email}")  
-
+        # Revisar si hay una sesión activa en Redis
+        existing_session = redis_client.get(f"session:{email}")
+        if existing_session:
+            # Si ya existe una sesión activa, evitar que inicie sesión nuevamente
+            return jsonify({"error": "Ya tienes una sesión activa. No puedes iniciar sesión nuevamente"}), 403
+        
         # Crear nuevo token de acceso
         access_token = create_access_token(identity=user["_id"], expires_delta=timedelta(hours=1))
 
-        # Guardar solo la sesión en Redis
+        # Guardar la nueva sesión en Redis
         redis_client.setex(f"session:{email}", 3600, json.dumps({"token": access_token, "user_id": user["_id"]}))
 
         # Guardar sesión en MongoDB
@@ -190,8 +196,9 @@ def login():
         log_event("login", "Usuario inició sesión", {"email": email}, user["_id"], str(session_id))
 
         return jsonify({"access_token": access_token}), 200
+
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": f"Error interno: {str(e)}"}), 500
 
     
 
@@ -346,56 +353,70 @@ def obtener_detalle_producto(id):
     except Exception as e:
         print(f"Error en obtener_detalle_producto: {e}")  # Log para depuración
         return jsonify({"error": "Error interno del servidor"}), 500
+    
 
 @app.route('/agregar_productos', methods=['POST'])
 @admin_required  # Asegura que solo administradores puedan agregar productos
-def agregar_producto():
+def agregar_productos():
     try:
         data = request.json
-        required_fields = ["nombre", "categoria", "descripcion", "precio", "stock"]
+        
+        # Si los datos recibidos son un array, procesarlos como múltiples productos
+        if isinstance(data, list):
+            productos = data
+        # Si los datos son un objeto, procesarlos como un solo producto
+        elif isinstance(data, dict):
+            productos = [data]
+        else:
+            return jsonify({"error": "El cuerpo de la solicitud debe ser un objeto o un array de productos"}), 400
+        
+        for producto_data in productos:
+            required_fields = ["nombre", "categoria", "descripcion", "precio", "stock"]
 
-        # Verificar que los campos obligatorios existan y no estén vacíos
-        for field in required_fields:
-            if field not in data or not data[field]:
-                return jsonify({"error": f"Falta el campo obligatorio '{field}'"}), 400
+            # Verificar que los campos obligatorios existan y no estén vacíos
+            for field in required_fields:
+                if field not in producto_data or not producto_data[field]:
+                    return jsonify({"error": f"Falta el campo obligatorio '{field}' para un producto"}), 400
 
-        # Validar que precio y stock sean números
-        if not isinstance(data["precio"], (int, float)) or data["precio"] < 0:
-            return jsonify({"error": "El precio debe ser un número positivo"}), 400
-        if not isinstance(data["stock"], int) or data["stock"] < 0:
-            return jsonify({"error": "El stock debe ser un número entero positivo"}), 400
+            # Validar que precio y stock sean números
+            if not isinstance(producto_data["precio"], (int, float)) or producto_data["precio"] < 0:
+                return jsonify({"error": "El precio debe ser un número positivo"}), 400
+            if not isinstance(producto_data["stock"], int) or producto_data["stock"] < 0:
+                return jsonify({"error": "El stock debe ser un número entero positivo"}), 400
 
-        # Asignar valores por defecto si faltan campos opcionales
-        nuevo_producto = {
-            "nombre": data["nombre"],
-            "categoria": data["categoria"],
-            "descripcion": data["descripcion"],
-            "precio": data["precio"],
-            "stock": data["stock"],
-            "imagenes": data.get("imagenes", []),  # Lista vacía si no se proporcionan imágenes
-            "valoraciones": data.get("valoraciones", []),  # Lista vacía para valoraciones
-            "etiquetas": data.get("etiquetas", []),  # Lista vacía para etiquetas
-            "fecha_agregado": datetime.now()  # Timestamp de creación
-        }
+            # Asignar valores por defecto si faltan campos opcionales
+            nuevo_producto = {
+                "nombre": producto_data["nombre"],
+                "categoria": producto_data["categoria"],
+                "descripcion": producto_data["descripcion"],
+                "precio": producto_data["precio"],
+                "stock": producto_data["stock"],
+                "imagenes": producto_data.get("imagenes", []),  # Lista vacía si no se proporcionan imágenes
+                "valoraciones": producto_data.get("valoraciones", []),  # Lista vacía para valoraciones
+                "etiquetas": producto_data.get("etiquetas", []),  # Lista vacía para etiquetas
+                "fecha_agregado": datetime.now()  # Timestamp de creación
+            }
 
-        # Insertar producto en la base de datos
-        resultado = inventario.insert_one(nuevo_producto)
-        producto_id = str(resultado.inserted_id)
+            # Insertar producto en la base de datos
+            resultado = inventario.insert_one(nuevo_producto)
+            producto_id = str(resultado.inserted_id)
 
-        # Registrar en el historial con información completa del producto
-        log_event("add_product", "Producto agregado al catálogo", {
-            "producto_id": producto_id,
-            "nombre": data["nombre"],
-            "precio": data["precio"],
-            "stock": data["stock"]
-        }, get_jwt_identity())
+            # Registrar en el historial con información completa del producto
+            log_event("add_product", "Producto agregado al catálogo", {
+                "producto_id": producto_id,
+                "nombre": producto_data["nombre"],
+                "precio": producto_data["precio"],
+                "stock": producto_data["stock"]
+            }, get_jwt_identity())
 
-        return jsonify({"mensaje": "Producto agregado exitosamente", "id": producto_id}), 201
+        return jsonify({"mensaje": "Productos agregados exitosamente"}), 201
 
     except PermissionError:  # Manejo de errores por falta de permisos
         return jsonify({"error": "No tienes los permisos necesarios"}), 403
     except Exception as e:
         return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500
+
+
 
 @app.route('/eliminar_producto/<string:id>', methods=['DELETE'])
 @admin_required  # Asegura que solo administradores puedan eliminar productos
@@ -596,7 +617,7 @@ def ver_carrito():
         carrito = redis_client.hgetall(carrito_id)
 
         if not carrito:
-            return jsonify({"message": "El carrito está vacío"}), 200
+            return jsonify({"message": "El carrito está vacío", "recomendaciones": []}), 200
 
         # Convertir datos de Redis a un diccionario con valores enteros
         carrito = {
@@ -610,13 +631,13 @@ def ver_carrito():
         if not producto_ids:
             return jsonify({"error": "Error al obtener los productos"}), 400
 
-        # Obtener detalles de los productos desde MongoDB
-        productos = inventario.find(
+        # Obtener detalles de los productos en el carrito
+        productos_carrito = list(inventario.find(
             {"_id": {"$in": producto_ids}},
-            {"nombre": 1, "precio": 1}  # Solo traer los campos necesarios
-        )
+            {"nombre": 1, "precio": 1, "etiquetas": 1}  # Obtener etiquetas también
+        ))
 
-        # Armar respuesta enriquecida con detalles del producto
+        # Construir la respuesta del carrito
         carrito_detalles = [
             {
                 "producto_id": str(producto["_id"]),
@@ -624,14 +645,39 @@ def ver_carrito():
                 "precio": producto.get("precio", 0),
                 "cantidad": carrito.get(str(producto["_id"]), 0)
             }
-            for producto in productos
+            for producto in productos_carrito
         ]
 
-        return jsonify({"carrito": carrito_detalles}), 200
+        # Obtener todas las etiquetas de los productos en el carrito
+        etiquetas_carrito = set()
+        for producto in productos_carrito:
+            etiquetas_carrito.update(producto.get("etiquetas", []))  # Extraer etiquetas
+
+        # Buscar productos con etiquetas similares (excluyendo los que ya están en el carrito)
+        recomendaciones = list(inventario.find(
+            {
+                "etiquetas": {"$in": list(etiquetas_carrito)},  # Coincidencia con etiquetas
+                "_id": {"$nin": producto_ids}  # No incluir productos del carrito
+            },
+            {"nombre": 1, "precio": 1}  # Solo traer los datos necesarios
+        ).limit(5))  # Limitar a 5 recomendaciones
+
+        # Formatear las recomendaciones
+        recomendaciones_formateadas = [
+            {
+                "producto_id": str(producto["_id"]),
+                "nombre": producto.get("nombre", "Producto sin nombre"),
+                "precio": producto.get("precio", 0)
+            }
+            for producto in recomendaciones
+        ]
+
+        return jsonify({"carrito": carrito_detalles, "recomendaciones": recomendaciones_formateadas}), 200
 
     except Exception as e:
         return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500
-    
+
+
 # funciones para el manejo de pagos y facturas
 def registrar_pago(user_id, factura_id, monto, forma_pago):
     try:
@@ -677,9 +723,9 @@ def confirmar_compra():
         if not forma_pago:
             return jsonify({"error": "Debe seleccionar una forma de pago"}), 400
 
-        pedidos_guardados = []
         total_factura = 0
         operaciones_stock = []
+        productos_factura = []
 
         for producto_id_bytes, cantidad_bytes in carrito_bytes.items():
             producto_id = producto_id_bytes.decode("utf-8")
@@ -697,32 +743,39 @@ def confirmar_compra():
             # Restar stock
             operaciones_stock.append(UpdateOne({"_id": ObjectId(producto_id)}, {"$inc": {"stock": -cantidad}}))
 
-            # Crear el pedido
-            pedido = {
-                "user_id": ObjectId(current_user_id),
-                "producto_id": ObjectId(producto_id),
+            # Agregar producto a la factura
+            productos_factura.append({
+                "producto_id": str(producto["_id"]),  # Convertir ObjectId a string
+                "nombre": producto["nombre"],
                 "cantidad": cantidad,
                 "precio_unitario": producto["precio"],
-                "subtotal": producto["precio"] * cantidad,
-                "fecha_compra": datetime.now()
-            }
-            pedidos.insert_one(pedido)
-            total_factura += pedido["subtotal"]
-
-            pedidos_guardados.append({
-                "producto_id": str(pedido["producto_id"]),  # Convertir ObjectId a string
-                "cantidad": pedido["cantidad"],
-                "precio_unitario": pedido["precio_unitario"],
-                "subtotal": pedido["subtotal"]
+                "subtotal": producto["precio"] * cantidad
             })
+            total_factura += producto["precio"] * cantidad
 
         # Aplicar cambios en el stock en un solo paso
         if operaciones_stock:
             inventario.bulk_write(operaciones_stock)
 
+        # Obtener cantidad de facturas previas del usuario
+        user = users.find_one({"_id": ObjectId(current_user_id)})
+        cantidad_facturas = user.get("cantidad_facturas", 0)
+
+        # Aplicar descuento solo después de la décima factura
+        descuento_aplicado = False
+        if cantidad_facturas >= 10:
+            descuento = total_factura * 0.10  # Ejemplo: 10% de descuento
+            total_factura -= descuento
+            descuento_aplicado = True
+
+        # Calcular la categoría y actualizar en la base de datos
+        categoria_usuario = calcular_categoria(cantidad_facturas)
+
         # Generar la factura
-        factura = generar_factura_from_data(current_user_id, pedidos_guardados)
+        factura = generar_factura_from_data(current_user_id, productos_factura)
         factura["forma_pago"] = forma_pago
+        factura["descuento_aplicado"] = descuento_aplicado
+        factura["total_final"] = total_factura
 
         # Insertar factura en MongoDB
         factura_insertada = facturas.insert_one(factura)
@@ -741,26 +794,29 @@ def confirmar_compra():
             "forma_pago": forma_pago
         }, current_user_id)
 
-        # Asegurarnos de que los productos estén en la factura correctamente
-        factura["productos"] = pedidos_guardados
+        # Incluir los productos en la factura de respuesta
+        factura["productos"] = productos_factura
 
-        # Convertir ObjectId a string en todos los campos necesarios dentro de la factura
-        for producto in factura["productos"]:
-            producto["producto_id"] = str(producto["producto_id"])
+        # Actualizar la cantidad de facturas y la categoría después de generar la factura
+        users.update_one(
+            {"_id": ObjectId(current_user_id)},
+            {"$set": {"categoria": categoria_usuario}}  # No incrementamos facturas antes
+        )
+        users.update_one(
+            {"_id": ObjectId(current_user_id)},
+            {"$inc": {"cantidad_facturas": 1}}  # Incrementamos las facturas después
+        )
 
-        # Ahora devolvemos la respuesta con el ObjectId convertido a string
         return jsonify({
             "message": "Compra confirmada y factura generada",
-            "factura": factura  # Devolver la factura con todos los _id como strings
+            "factura": factura  
         }), 200
 
     except Exception as e:
         return jsonify({"error": f"Error interno: {str(e)}"}), 500
 
 
-
-
-def generar_factura_from_data(current_user_id, pedidos_usuario):
+def generar_factura_from_data(current_user_id, productos_factura):
     try:
         user = users.find_one({"_id": ObjectId(current_user_id)}, 
                               {"nombre": 1, "pais": 1, "direccion": 1, "categoria": 1})
@@ -775,7 +831,7 @@ def generar_factura_from_data(current_user_id, pedidos_usuario):
             "user_id": str(ObjectId(current_user_id)),
             "nombre_usuario": user["nombre"],
             "ubicacion_usuario": ubicacion_usuario,
-            "productos": [],
+            "productos": productos_factura,  # Usar los productos directamente
             "total": 0,
             "iva": 0,
             "total_con_iva": 0,
@@ -783,22 +839,9 @@ def generar_factura_from_data(current_user_id, pedidos_usuario):
             "total_final": 0
         }
 
-        for pedido in pedidos_usuario:
-            producto = inventario.find_one({"_id": ObjectId(pedido["producto_id"])}, 
-                                           {"nombre": 1, "descripcion": 1, "precio": 1})
-            if not producto:
-                continue
-
-            subtotal = round(pedido["cantidad"] * float(producto["precio"]), 2)
-
-            factura["productos"].append({
-                "nombre": producto.get("nombre", "Desconocido"),
-                "descripcion": producto.get("descripcion", "Sin descripción"),
-                "cantidad": pedido["cantidad"],
-                "precio_unitario": round(float(producto["precio"]), 2),
-                "total": subtotal
-            })
-            factura["total"] += subtotal
+        # Calcular total
+        for producto in productos_factura:
+            factura["total"] += producto["subtotal"]
 
         # Calcular impuestos y descuentos
         factura["iva"] = round(factura["total"] * 0.24, 2)
@@ -807,33 +850,27 @@ def generar_factura_from_data(current_user_id, pedidos_usuario):
         descuentos = {"plata": 0.05, "oro": 0.10, "bronce": 0.00}
         categoria_usuario = user.get("categoria", "bronce").lower()
         factura["descuento_categoria"] = round(factura["total_con_iva"] * descuentos.get(categoria_usuario, 0), 2)
-        factura["total_final"] = round(factura["total_con_iva"] - factura["descuento_categoria"], 2)
-
-        users.update_one({"_id": ObjectId(current_user_id)},
-                        {"$inc": {"cantidad_facturas": 1}}
-                    )
 
         return factura
 
     except Exception as e:
         return {"error": f"Error en generación de factura: {str(e)}"}
 
+
 @app.route('/facturas', methods=['GET'])
 @jwt_required()
-def obtener_facturas_usuario():
+def obtener_facturas():
     try:
-        current_user_id = get_jwt_identity()
-
-        # Buscar facturas usando el user_id
-        facturas_usuario = facturas.find({"user_id": ObjectId(current_user_id)}).sort("fecha_compra", -1)
+        # Buscar todas las facturas sin filtro por user_id
+        facturas_lista = facturas.find().sort("fecha_compra", -1)
 
         # Verificar si se encontraron facturas
-        facturas_usuario = list(facturas_usuario)
-        if not facturas_usuario:
-            return jsonify({"message": "No se encontraron facturas para este usuario"}), 404
+        facturas_lista = list(facturas_lista)
+        if not facturas_lista:
+            return jsonify({"message": "No se encontraron facturas"}), 404
 
         # Formatear los datos de las facturas
-        facturas_usuario = [
+        facturas_lista = [
             {
                 "_id": str(factura["_id"]),
                 "fecha_compra": factura["fecha_compra"].isoformat(),
@@ -847,47 +884,46 @@ def obtener_facturas_usuario():
                 "productos": factura.get("productos", []),
                 "forma_pago": factura.get("forma_pago")
             }
-            for factura in facturas_usuario
+            for factura in facturas_lista
         ]
+
+        return jsonify(facturas_lista), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Error interno: {str(e)}"}), 500
+
+@app.route('/facturas/<string:user_id>', methods=['GET'])
+def obtener_facturas_por_usuario(user_id):
+    try:
+        # Verificar si el user_id es un ObjectId válido
+        if not ObjectId.is_valid(user_id):
+            return jsonify({"error": "ID de usuario no válido"}), 400
+
+        # Buscar las facturas del usuario en MongoDB
+        facturas_usuario = list(facturas.find({"user_id": ObjectId(user_id)}))
+
+        if not facturas_usuario:
+            return jsonify({"mensaje": "No se encontraron facturas para este usuario"}), 404
+
+        # Convertir ObjectId a string en cada factura para que sea serializable en JSON
+        for factura in facturas_usuario:
+            factura["_id"] = str(factura["_id"])
+            factura["user_id"] = str(factura["user_id"])  # Asegurarse de que user_id se convierte en string
+            if "fecha_compra" in factura:
+                factura["fecha_compra"] = factura["fecha_compra"].isoformat()  # Convertir fecha
 
         return jsonify(facturas_usuario), 200
 
     except Exception as e:
-        return jsonify({"error": f"Error interno: {str(e)}"}), 500
+        return jsonify({"error": f"Error al obtener las facturas del usuario: {str(e)}"}), 500
 
-
-@app.route('/factura/<string:factura_id>', methods=['GET'])
-@jwt_required()
-def obtener_factura_por_id(factura_id):
-    try:
-        if not ObjectId.is_valid(factura_id):
-            return jsonify({"error": "ID de factura no válido"}), 400
-
-        factura = facturas.find_one({"_id": ObjectId(factura_id)})
-
-        if not factura:
-            return jsonify({"error": "Factura no encontrada"}), 404
-
-        # Convertir ObjectId a string
-        factura["_id"] = str(factura["_id"])
-        factura["fecha_compra"] = factura["fecha_compra"].isoformat()  # Convertir fecha a string ISO
-
-        # Convertir productos si existen
-        if "productos" in factura and isinstance(factura["productos"], list):
-            for producto in factura["productos"]:
-                if "_id" in producto:
-                    producto["_id"] = str(producto["_id"])  # Convertir `_id` de cada producto
-
-        return jsonify(factura), 200
-    except Exception as e:
-        return jsonify({"error": f"Error interno: {str(e)}"}), 500
 
 
 
 
 def calcular_categoria(cantidad_facturas):
     try:
-        if cantidad_facturas >= 9:
+        if cantidad_facturas >=9:
             return "Oro"
         elif cantidad_facturas >= 4:
             return "Plata"
