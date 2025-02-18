@@ -796,16 +796,50 @@ def eliminar_carrito():
         if not redis_client.exists(carrito_id):
             return jsonify({"error": "El carrito está vacío o no existe"}), 404
 
+        # Obtener el carrito antes de eliminarlo
+        carrito = redis_client.hgetall(carrito_id)
+
+        # Almacenar el carrito en caché por 10 minutos antes de eliminarlo
+        if carrito:
+            redis_client.setex(f"carrito_eliminado:{current_user_id}", 600, str(carrito))  # 600 segundos = 10 minutos
+
         # Eliminar el carrito completo de Redis
         redis_client.delete(carrito_id)
 
         # Registrar el evento de eliminación
         log_event("cart_update", "Carrito eliminado completamente", {}, current_user_id)
 
-        return jsonify({"message": "Carrito eliminado exitosamente"}), 200
+        return jsonify({"message": "Carrito eliminado exitosamente y guardado en caché por 10 minutos"}), 200
 
     except Exception as e:
         return jsonify({"error": f"Error interno del servidor: {str(e)}"}), 500
+
+@app.route('/restaurar_carrito', methods=['POST'])
+@jwt_required()
+def restaurar_carrito():
+    try:
+        current_user_id = get_jwt_identity()
+
+        # Verificar si el carrito eliminado está en caché (en Redis)
+        carrito_cache = redis_client.get(f"carrito_eliminado:{current_user_id}")
+
+        if not carrito_cache:
+            return jsonify({"error": "No se encuentra un carrito eliminado para este usuario en caché"}), 404
+
+        # Restaurar el carrito desde Redis
+        carrito = eval(carrito_cache)  # Convertir el string almacenado en un diccionario
+
+        # Reinsertar el carrito en Redis
+        redis_client.hmset(f"carrito:{current_user_id}", carrito)
+
+        # Eliminar el carrito de Redis ya que se restauró
+        redis_client.delete(f"carrito_eliminado:{current_user_id}")
+
+        return jsonify({"mensaje": "Carrito restaurado con éxito"}), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Error al restaurar el carrito: {str(e)}"}), 500
+
 
 
 def generar_factura_from_data(current_user_id, productos_factura, descuento=0):
