@@ -1,0 +1,9 @@
+Flask
+pymongo
+werkzeug
+flask-jwt-extended
+redis
+bson
+datetime
+functools
+json
