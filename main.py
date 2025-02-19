@@ -1,5 +1,5 @@
 from pymongo import MongoClient, UpdateOne 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, url_for, flash, jsonify, render_template, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity  # type: ignore
 from datetime import datetime, timedelta
@@ -279,7 +279,7 @@ def logout():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+#------------------------------------ Conexión con front ------------------------------------
 
 # ----------------------------------- Usuarios y productos -----------------------------------
 

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Bienvenido, {{ user_name }}!</h2>
+
+<!-- Mostrar información del usuario -->
+<p><strong>Email:</strong> {{ user_email }}</p>
+
+<!-- Botones o enlaces a otras funcionalidades -->
+<div>
+    <h3>Opciones</h3>
+    <ul>
+        <li><a href="{{ url_for('obtener_productos') }}">Ver productos</a></li>
+        <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+    </ul>
+</div>
+
+<script>
+    // Código JavaScript
+    fetch('/dashboard', {
+    method: 'GET',
+    headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.log(error));
+
+</script>
+
+{% endblock %}
